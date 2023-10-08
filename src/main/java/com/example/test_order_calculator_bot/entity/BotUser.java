@@ -1,14 +1,12 @@
 package com.example.test_order_calculator_bot.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,10 +16,12 @@ public class BotUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String idTlg;
+    private Long chatId;
     private String firstName;
     private String lastName;
     private String username;
     private LocalDateTime dateOfFirstVisit;
     private LocalDateTime dateOfLastVisit;
+    @OneToMany(mappedBy = "botUser")
+    private Set<Order> userOrders;
 }

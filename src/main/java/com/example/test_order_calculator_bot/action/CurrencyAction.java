@@ -1,4 +1,4 @@
-package com.example.test_order_calculator_bot.bot.action;
+package com.example.test_order_calculator_bot.action;
 
 import com.example.test_order_calculator_bot.bot.KeyBoard;
 import com.example.test_order_calculator_bot.bot.ProcessingBot;

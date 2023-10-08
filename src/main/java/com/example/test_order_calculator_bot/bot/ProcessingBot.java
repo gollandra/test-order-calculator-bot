@@ -1,9 +1,8 @@
 package com.example.test_order_calculator_bot.bot;
 
-import com.example.test_order_calculator_bot.bot.action.*;
-import com.example.test_order_calculator_bot.dao.BotUserDAO;
+import com.example.test_order_calculator_bot.action.*;
 import com.example.test_order_calculator_bot.entity.Order;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.test_order_calculator_bot.service.WorkWithUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,6 +16,8 @@ import java.util.Map;
 @Component
 public class ProcessingBot extends TelegramLongPollingBot {
 
+    public static final Map<String, String> bindingBy = new HashMap<>();
+    public static final Map<String, Order> orders = new HashMap<>();
     private final Map<String, Action> actions = new HashMap<>() {{
         put("О боте", new InfoAction());
         put("/start", new StartAction());
@@ -25,15 +26,14 @@ public class ProcessingBot extends TelegramLongPollingBot {
         put("Введите процент риска", new RiskAction());
         put("Введите текущий баланс", new BalanceAction());
     }};
-
-    public static final Map<String, String> bindingBy = new HashMap<>();
-    public static final Map<String, Order> orders = new HashMap<>();
-
     @Value("${bot.name}")
     String botUsername;
 
-    public ProcessingBot(@Value("${bot.token}") String botToken) {
+    private final WorkWithUser workWithUser;
+
+    public ProcessingBot(@Value("${bot.token}") String botToken, WorkWithUser workWithUser) {
         super(botToken);
+        this.workWithUser = workWithUser;
     }
 
     @Override
@@ -49,6 +49,7 @@ public class ProcessingBot extends TelegramLongPollingBot {
                 BotApiMethod message = actions.get(bindingBy.get(chatId)).callback(update);
                 sendMessage(message);
             }
+            workWithUser.saveUser(update);
         }
     }
 

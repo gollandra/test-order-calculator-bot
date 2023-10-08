@@ -1,45 +1,38 @@
 package com.example.test_order_calculator_bot.entity;
 
+import com.example.test_order_calculator_bot.config.CoefficientsForOrder;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "BotUserOrder")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String currency;
     private String sumIncoming;
     private String risk;
     private String balance;
+    private LocalDateTime dateTime;
+    @ManyToOne
+    @JoinColumn(name = "bot_user_id")
+    private BotUser botUser;
 
     public Double computeOrder() {
-        switch (currency) {
-            case "Рубли":
-                try {
-                    return Double.parseDouble(balance) / 10 *
+        try {
+            return Double.parseDouble(balance) / CoefficientsForOrder.coefficients.get(currency) *
                             (Double.parseDouble(risk) / 100) +
                             Double.parseDouble(sumIncoming);
-                } catch (Exception e) {
-                    return null;
-                }
-            case "Доллары":
-                try {
-                    return Double.parseDouble(balance) / 7 *
-                            (Double.parseDouble(risk) / 100) +
-                            Double.parseDouble(sumIncoming);
-                } catch (Exception e) {
-                    return null;
-                }
-            case "Евро":
-                try {
-                    return Double.parseDouble(balance) / 30 *
-                            (Double.parseDouble(risk) / 100) +
-                            Double.parseDouble(sumIncoming);
-                } catch (Exception e) {
-                    return null;
-                }
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 }

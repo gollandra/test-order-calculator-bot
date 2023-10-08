@@ -1,4 +1,4 @@
-package com.example.test_order_calculator_bot.bot.action;
+package com.example.test_order_calculator_bot.action;
 
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
