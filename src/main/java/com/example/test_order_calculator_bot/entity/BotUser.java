@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +23,6 @@ public class BotUser {
     private String username;
     private LocalDateTime dateOfFirstVisit;
     private LocalDateTime dateOfLastVisit;
-    @OneToMany(mappedBy = "botUser")
-    private Set<Order> userOrders = new HashSet<>();
+    @OneToMany(mappedBy = "botUser", fetch = FetchType.EAGER)
+    private List<Order> userOrders = new ArrayList<>();
 }

@@ -26,7 +26,6 @@ public class BalanceAction implements Action {
         String balance = update.getMessage().getText();
 
         MainService.orders.get(chatId).setBalance(balance);
-        MainService.bindingBy.remove(chatId);
         Order order = MainService.orders.get(chatId);
 
         String text = order.computeOrder() == null
@@ -40,8 +39,6 @@ public class BalanceAction implements Action {
                                 
                 Ваша ставка - %f
                 """, order.getCurrency(), order.getSumIncoming(), order.getRisk(), order.getBalance(), order.computeOrder());
-
-        MainService.orders.remove(chatId);
 
         SendMessage message = new SendMessage(chatId, text);
         message.setReplyMarkup(KeyBoard.getReplyKeyboardMarkup());

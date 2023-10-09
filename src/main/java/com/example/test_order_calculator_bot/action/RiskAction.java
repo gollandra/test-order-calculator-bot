@@ -23,7 +23,6 @@ public class RiskAction implements Action {
         String currency = update.getMessage().getText();
 
         MainService.orders.get(chatId).setRisk(currency);
-        MainService.bindingBy.remove(chatId);
 
         return new BalanceAction().handle(update);
     }

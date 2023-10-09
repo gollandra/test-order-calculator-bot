@@ -1,7 +1,6 @@
 package com.example.test_order_calculator_bot.bot;
 
 import com.example.test_order_calculator_bot.service.MainService;
-import com.example.test_order_calculator_bot.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,14 +11,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class ProcessingBot extends TelegramLongPollingBot {
 
-    private final UserService userService;
     private final MainService mainService;
     @Value("${bot.name}")
     String botUsername;
 
-    public ProcessingBot(@Value("${bot.token}") String botToken, UserService userService, MainService mainService) {
+    public ProcessingBot(@Value("${bot.token}") String botToken, MainService mainService) {
         super(botToken);
-        this.userService = userService;
         this.mainService = mainService;
     }
 
@@ -27,7 +24,6 @@ public class ProcessingBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         BotApiMethod<?> message = mainService.processingUpdate(update);
         sendMessage(message);
-        userService.saveUser(update);
     }
 
     private void sendMessage(BotApiMethod<?> message) {

@@ -30,7 +30,6 @@ public class CurrencyAction implements Action {
         String currency = update.getMessage().getText();
 
         MainService.orders.get(chatId).setCurrency(currency);
-        MainService.bindingBy.remove(chatId);
 
         return new SumIncomingAction().handle(update);
     }

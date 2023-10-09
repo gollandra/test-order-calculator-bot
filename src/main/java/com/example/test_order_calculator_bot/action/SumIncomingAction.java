@@ -24,7 +24,6 @@ public class SumIncomingAction implements Action {
         String sumIncoming = update.getMessage().getText();
 
         MainService.orders.get(chatId).setSumIncoming(sumIncoming);
-        MainService.bindingBy.remove(chatId);
 
         return new RiskAction().handle(update);
     }
