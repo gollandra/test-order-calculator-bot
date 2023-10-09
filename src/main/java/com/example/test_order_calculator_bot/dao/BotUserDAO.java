@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Service
 public interface BotUserDAO extends JpaRepository<BotUser, Long> {
-    Optional<BotUser> findBotUserByChatId(Long chatId);
+    Optional<BotUser> findBotUserByUserTlgId(Long userTlgId);
 }

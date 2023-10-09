@@ -2,7 +2,7 @@ package com.example.test_order_calculator_bot.bot;
 
 import com.example.test_order_calculator_bot.action.*;
 import com.example.test_order_calculator_bot.entity.Order;
-import com.example.test_order_calculator_bot.service.WorkWithUser;
+import com.example.test_order_calculator_bot.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -29,9 +29,9 @@ public class ProcessingBot extends TelegramLongPollingBot {
     @Value("${bot.name}")
     String botUsername;
 
-    private final WorkWithUser workWithUser;
+    private final UserService workWithUser;
 
-    public ProcessingBot(@Value("${bot.token}") String botToken, WorkWithUser workWithUser) {
+    public ProcessingBot(@Value("${bot.token}") String botToken, UserService workWithUser) {
         super(botToken);
         this.workWithUser = workWithUser;
     }
