@@ -12,12 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class BalanceAction implements Action {
     @Override
     public BotApiMethod<?> handle(Update update) {
-        String chatId = update.getMessage().getChatId().toString();
-        String text = "Введите текущий баланс";
+        MainService.bindingBy.put(update.getMessage().getChatId().toString(), NameOfActions.BALANCE_ACTION);
 
-        MainService.bindingBy.put(chatId, text);
-
-        return new SendMessage(chatId, text);
+        return new SendMessage(update.getMessage().getChatId().toString(), NameOfActions.BALANCE_ACTION);
     }
 
     @Override

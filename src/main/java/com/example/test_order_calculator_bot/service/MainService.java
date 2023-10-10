@@ -27,14 +27,19 @@ public class MainService {
                        RiskAction riskAction,
                        InfoAction infoAction,
                        CurrencyAction currencyAction,
-                       BalanceAction balanceAction, UserService userService) {
+                       BalanceAction balanceAction,
+                       AdminUserAction adminUserAction,
+                       AdminOrderAction adminOrderAction,
+                       UserService userService) {
         this.userService = userService;
-        actions.put("/start", startAction);
-        actions.put("Введите сумму вхождения", sumIncomingAction);
-        actions.put("Введите процент риска", riskAction);
-        actions.put("О боте", infoAction);
-        actions.put("Введите текущий баланс", balanceAction);
-        actions.put("Рассчитать стоимость", currencyAction);
+        actions.put(NameOfActions.START_ACTION, startAction);
+        actions.put(NameOfActions.SUM_INCOMING_ACTION, sumIncomingAction);
+        actions.put(NameOfActions.RISK_ACTION, riskAction);
+        actions.put(NameOfActions.INFO_ACTION, infoAction);
+        actions.put(NameOfActions.BALANCE_ACTION, balanceAction);
+        actions.put(NameOfActions.CURRENCY_ACTION, currencyAction);
+        actions.put(NameOfActions.ADMIN_USER_ACTION, adminUserAction);
+        actions.put(NameOfActions.ADMIN_ORDER_ACTION, adminOrderAction);
     }
 
     public BotApiMethod<?> processingUpdate(Update update) {
@@ -46,11 +51,15 @@ public class MainService {
         Order order = null;
 
         if (actions.containsKey(key)) {
-            message = actions.get(key).handle(update);
-            bindingBy.put(chatId, key);
+            if (!key.equals(NameOfActions.ADMIN_USER_ACTION) && !key.equals(NameOfActions.ADMIN_ORDER_ACTION)) {
+                message = actions.get(key).handle(update);
+                bindingBy.put(chatId, key);
+            } else if (listOfAdmins.contains(update.getMessage().getFrom().getId().toString())) {
+                message = actions.get(key).handle(update);
+            }
         } else if (bindingBy.containsKey(chatId)) {
             message = actions.get(bindingBy.get(chatId)).callback(update);
-            if (bindingBy.get(chatId).equals("Введите текущий баланс")) {
+            if (bindingBy.get(chatId).equals(NameOfActions.BALANCE_ACTION)) {
                 order = orders.get(chatId);
             }
         }

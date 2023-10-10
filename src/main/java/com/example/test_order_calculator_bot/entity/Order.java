@@ -29,8 +29,8 @@ public class Order {
     public Double computeOrder() {
         try {
             return Double.parseDouble(balance) / CoefficientsForOrder.coefficients.get(currency) *
-                            (Double.parseDouble(risk) / 100) +
-                            Double.parseDouble(sumIncoming);
+                    (Double.parseDouble(risk) / 100) +
+                    Double.parseDouble(sumIncoming);
         } catch (Exception e) {
             return null;
         }

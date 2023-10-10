@@ -11,11 +11,9 @@ public class SumIncomingAction implements Action {
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        String chatId = update.getMessage().getChatId().toString();
-        String text = "Введите сумму вхождения";
-        MainService.bindingBy.put(chatId, text);
+        MainService.bindingBy.put(update.getMessage().getChatId().toString(), NameOfActions.SUM_INCOMING_ACTION);
 
-        return new SendMessage(chatId, text);
+        return new SendMessage(update.getMessage().getChatId().toString(), NameOfActions.SUM_INCOMING_ACTION);
     }
 
     @Override

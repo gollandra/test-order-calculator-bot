@@ -10,11 +10,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class RiskAction implements Action {
     @Override
     public BotApiMethod<?> handle(Update update) {
-        String chatId = update.getMessage().getChatId().toString();
-        String text = "Введите процент риска";
-        MainService.bindingBy.put(chatId, text);
+        MainService.bindingBy.put(update.getMessage().getChatId().toString(), NameOfActions.RISK_ACTION);
 
-        return new SendMessage(chatId, text);
+        return new SendMessage(update.getMessage().getChatId().toString(), NameOfActions.RISK_ACTION);
     }
 
     @Override
